@@ -1,5 +1,6 @@
 require(readr)
 require(dplyr)
+require(tidyr)
 
 read_halo<-function(hfile) {
 
@@ -13,7 +14,16 @@ read_halo<-function(hfile) {
 
 	di=di %>%
 		rename_all(~gsub(" Positive.*","",.)) %>% 
-		mutate(x0=(XMax+XMin)/2,y0=(YMax+YMin)/2)
+		mutate(x0=(XMax+XMin)/2,y0=-(YMax+YMin)/2) %>%
+		gather(Marker,Pos,all_of(markers))
+
+	if(file.exists("meta/markerRename.csv")) {
+		markerRename=read_csv("meta/markerRename.csv")
+		di=left_join(di,markerRename,by=c(Marker="Orig")) %>%
+			mutate(Marker=New) %>%
+			select(-New)
+		markers=unique(di$Marker)
+	}
 
 	list(dat=di,markers=markers)
 
