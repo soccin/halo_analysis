@@ -1,10 +1,19 @@
+args=commandArgs(trailing=T)
+
+if(len(args)!=1) {
+    cat("\n\tusage: getCounts.R phenoTypeFile\n\n")
+    quit()
+}
+
+phenoFile=args[1]
+
 source("read_halo.R")
 source("pheno_types.R")
 
 oo=map(fs::dir_ls("raw",recur=T,regex="ObjectData.*.csv.gz$"),read_halo)
 di=map(oo,"dat") %>% bind_rows
 
-phenoTable=get_pheno_table(di)
+phenoTable=get_pheno_table(di,phenoFile)
 
 tbl=di %>%
     filter(Pos==1) %>%
