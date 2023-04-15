@@ -1,5 +1,5 @@
 source("read_halo.R")
-source("getPhenoTypes.R")
+source("pheno_types.R")
 
 oo=map(fs::dir_ls("raw",recur=T,regex="ObjectData.*.csv.gz$"),read_halo)
 di=map(oo,"dat") %>% bind_rows
@@ -30,5 +30,5 @@ tbl1=tbl %>%
     arrange(desc(Total)) %>%
     select(-Total)
 
-openxlsx::write.xlsx(tbl1,"markerComboTable.xlsx")
+openxlsx::write.xlsx(tbl1,"markerComboTableV2.xlsx")
 
