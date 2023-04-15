@@ -1,4 +1,4 @@
-require(purrr)
+suppressMessages(require(purrr))
 
 get_pos_markers<-function(di) {
 
@@ -13,11 +13,11 @@ get_pos_markers<-function(di) {
 
 }
 
-get_pheno_table<-function(di) {
+get_pheno_table<-function(di,pfile) {
 
     pMt=get_pos_markers(di) %>% transpose
 
-    pheno=readxl::read_xlsx("meta/proj_B-101-533__MetaData.xlsx")
+    pheno=readxl::read_xlsx(pfile)
     pp=transpose(pheno)
 
     for(ii in seq(pp)) {
