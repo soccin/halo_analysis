@@ -1,7 +1,9 @@
 source("read_halo.R")
 source("pheno_types.R")
 
-load_data <- function(phenoFile) {
+require(memoise)
+
+.load_data <- function(phenoFile) {
 
     oo=map(fs::dir_ls("raw",recur=T,regex="ObjectData.*.csv.gz$"),read_halo)
     di=map(oo,"dat") %>% bind_rows
@@ -28,3 +30,6 @@ load_data <- function(phenoFile) {
     list(di=di,phenoTable=phenoTable)
 
 }
+
+cdb <- cachem::cache_disk("./__RCache__")
+load_data<-memoise(.load_data,cache=cdb)
