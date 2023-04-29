@@ -21,7 +21,7 @@ read_halo<-function(hfile) {
 
 	if(file.exists("meta/markerRename.csv")) {
 
-		markerRename=read_csv("meta/markerRename.csv")
+		markerRename=read_csv("meta/markerRename.csv",show_col_types = FALSE)
 
 		di=left_join(di,markerRename,by=c(Marker="Orig")) %>%
 			filter(!is.na(New)) %>%

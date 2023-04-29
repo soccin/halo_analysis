@@ -17,10 +17,6 @@ load_data <- function(phenoFile) {
 
     di=di %>%
         left_join(cellMarkerPos,by = join_by(C.UUID)) %>%
-        spread(Marker,Pos)
-
-    di=di %>%
-        left_join(cellMarkerPos,by = join_by(C.UUID)) %>%
         mutate(Marker=paste0("Marker:",Marker)) %>%
         spread(Marker,Pos) %>%
         left_join(phenoTable,by = join_by(PMID),relationship = "many-to-many") %>%

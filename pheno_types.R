@@ -30,8 +30,6 @@ get_pheno_table<-function(di,pfile) {
         for(jj in seq(pMt)) {
             pMi=pMt[[jj]]
             if(setequal(intersect(pMi$PosMarkers,mPos),mPos) && len(intersect(mNeg,pMi$PosMarkers))==0) {
-                print(pi$Tag)
-                print(pMi)
                 pMi$Tag=append(pMi$Tag,pi$Tag)
                 pMt[[jj]]=pMi
             }
@@ -41,7 +39,8 @@ get_pheno_table<-function(di,pfile) {
     map(pMt,\(x){x$PosMarkers=NULL;x}) %>%
         map(as_tibble) %>%
         bind_rows %>%
-        filter(Tag!="all")
+        filter(Tag!="all") %>%
+        left_join(pheno,by="Tag")
 
 }
 
