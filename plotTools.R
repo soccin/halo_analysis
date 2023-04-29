@@ -25,3 +25,13 @@ label_log1p=function (base = 10, digits = 3)
     }
 }
 
+plotCounts<-function(cellCounts) {
+    cellCounts %>% ggplot(aes(Tag,n,fill=Region)) +
+        geom_col(position=position_dodge(preserve="single"),color="grey35") +
+        facet_wrap(~SID,scales='free_y') +
+        coord_flip() +
+        scale_y_continuous(trans="log1p",breaks=c(0,10^(1:6)),labels=label_log1p()) +
+        geom_hline(yintercept=0) +
+        scale_fill_brewer(palette="Accent") +
+        theme_minimal()
+}
