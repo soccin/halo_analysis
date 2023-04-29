@@ -32,6 +32,8 @@ read_halo<-function(hfile) {
 
 	}
 
+	di = di %>% mutate(C.UUID=paste0(SID,":",ObjectID)) %>% select(C.UUID,everything())
+
 	list(dat=di,markers=markers)
 
 }

@@ -4,12 +4,13 @@ get_pos_markers<-function(di) {
 
     di %>%
         filter(Pos==1) %>%
-        select(ObjectID,Marker) %>%
-        arrange(ObjectID,Marker) %>%
-        group_by(ObjectID) %>%
+        select(C.UUID,Marker) %>%
+        group_by(C.UUID) %>%
         summarize(PosMarkers=list(Marker),PMID=paste(Marker,collapse=",")) %>%
         distinct(PosMarkers,PMID) %>%
-        mutate(Tag=list("all"))
+        mutate(Tag=list("all")) %>%
+        ungroup %>%
+        distinct
 
 }
 
