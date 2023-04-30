@@ -104,3 +104,36 @@ pdf(file="proj_B-101-533_02.pdf",width=14,height=8.5)
 print(pg)
 dev.off()
 
+cellTagsDistinct=cellTagsFilt %>%
+    filter(!Tag %in% c("DAPI","t")) %>%
+    group_by(C.UUID) %>%
+    summarize(Tags=paste0(Tag,collapse=",")) %>%
+    mutate(Tags=gsub(",.*","",Tags))
+
+cells=di %>%
+    select(C.UUID,SID,Region,x0,y0) %>%
+    filter(C.UUID %in% cellTagsFilt$C.UUID) %>%
+    left_join(cellTagsDistinct)
+
+tagNames=cells %>% distinct(Tags) %>% filter(!is.na(Tags)) %>% arrange(Tags) %>% pull
+tagColors=RColorBrewer::brewer.pal(len(tagNames),"Dark2")
+names(tagColors)=tagNames
+
+cells=cells %>% group_split(SID)
+
+#library(ggrastr)
+
+pg=list()
+for(si in seq(cells)) {
+    pg[[len(pg)+1]]=cells[[si]] %>% filter(Region!="Glass") %>% arrange(Tags) %>%
+        ggplot(aes(x0,y0,color=Tags)) +
+            geom_point(size=.4) +
+            coord_fixed() +
+            theme_minimal() +
+            scale_color_manual(values=tagColors,na.value="grey75") +
+            guides(colour = guide_legend(override.aes = list(size=5,alpha=1)))
+}
+
+pdf(file="proj_B-101-533_Cells.pdf",height=11,width=11)
+print(pg)
+dev.off()
