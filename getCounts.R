@@ -1,6 +1,6 @@
 args=commandArgs(trailing=T)
 
-if(len(args)!=1) {
+if(length(args)!=1) {
     cat("\n\tusage: getCounts.R phenoTypeFile\n\n")
     quit()
 }

@@ -29,7 +29,7 @@ get_pheno_table<-function(di,pfile) {
 
         for(jj in seq(pMt)) {
             pMi=pMt[[jj]]
-            if(setequal(intersect(pMi$PosMarkers,mPos),mPos) && len(intersect(mNeg,pMi$PosMarkers))==0) {
+            if(setequal(intersect(pMi$PosMarkers,mPos),mPos) && length(intersect(mNeg,pMi$PosMarkers))==0) {
                 pMi$Tag=append(pMi$Tag,pi$Tag)
                 pMt[[jj]]=pMi
             }

@@ -1,7 +1,12 @@
 args=commandArgs(trailing=T)
 
-if(len(args)!=1) {
+if(length(args)!=1) {
     cat("\n\tusage: getCounts.R phenoTypeFile\n\n")
+    quit()
+}
+
+if(as.numeric(version$major)<4) {
+    cat("\n\tNeed to use R version >= 4\n\n")
     quit()
 }
 
@@ -86,8 +91,8 @@ for(base in bases) {
         filter(Phenotypes %in% targets & Region %in% regions)
 
     if(nrow(pctBase)>0) {
-        nTargets=len(targets)
-        pg[[len(pg)+1]]=pctBase %>%
+        nTargets=length(targets)
+        pg[[length(pg)+1]]=pctBase %>%
             ggplot(aes(SID,PCT,fill=Region)) +
                 geom_col(position=position_dodge(preserve="single"),color="grey35") +
                 facet_wrap(~Tag,scales="free_y",ncol=pcols[nTargets],nrow=prows[nTargets]) +
@@ -116,7 +121,7 @@ cells=di %>%
     left_join(cellTagsDistinct)
 
 tagNames=cells %>% distinct(Tags) %>% filter(!is.na(Tags)) %>% arrange(Tags) %>% pull
-tagColors=RColorBrewer::brewer.pal(len(tagNames),"Dark2")
+tagColors=RColorBrewer::brewer.pal(length(tagNames),"Dark2")
 names(tagColors)=tagNames
 
 cells=cells %>% group_split(SID)
@@ -125,7 +130,7 @@ cells=cells %>% group_split(SID)
 
 pg=list()
 for(si in seq(cells)) {
-    pg[[len(pg)+1]]=cells[[si]] %>% filter(Region!="Glass") %>% arrange(Tags) %>%
+    pg[[length(pg)+1]]=cells[[si]] %>% filter(Region!="Glass") %>% arrange(Tags) %>%
         ggplot(aes(x0,y0,color=Tags)) +
             geom_point(size=.4) +
             coord_fixed() +
