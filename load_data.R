@@ -1,11 +1,17 @@
 source("read_halo.R")
 source("pheno_types.R")
 
-require(memoise)
 
-.load_data <- function(phenoFile) {
+load_data <- function(phenoFile) {
 
     oo=map(fs::dir_ls("raw",recur=T,regex="ObjectData.*.csv.gz$"),read_halo)
+
+    if(length(oo)==0) {
+        cat("\n\tCan not file Halo CSV files\n")
+        cat("\tThey need to be in the subfolder '/raw'\n\n")
+        quit()
+    }
+
     di=map(oo,"dat") %>% bind_rows
 
     phenoTable=get_pheno_table(di,phenoFile)
@@ -21,7 +27,7 @@ require(memoise)
         left_join(cellMarkerPos,by = join_by(C.UUID)) %>%
         mutate(Marker=paste0("Marker:",Marker)) %>%
         spread(Marker,Pos) %>%
-        left_join(phenoTable,by = join_by(PMID),relationship = "many-to-many") %>%
+        left_join(phenoTable,by = join_by(PMID),multiple="all") %>%
         select(-Tag) %>%
         mutate(Phenotypes=paste0("Pheno:",Phenotypes)) %>%
         mutate(Pos=1) %>%
@@ -31,5 +37,6 @@ require(memoise)
 
 }
 
-cdb <- cachem::cache_disk("./__RCache__")
-load_data<-memoise(.load_data,cache=cdb)
+# require(memoise)
+# cdb <- cachem::cache_disk("./__RCache__")
+# load_data<-memoise(.load_data,cache=cdb)
