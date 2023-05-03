@@ -1,13 +1,15 @@
-args=commandArgs(trailing=T)
+if (!interactive(){
+  args=commandArgs(trailing=T)
 
-if(length(args)!=1) {
-    cat("\n\tusage: getCounts.R phenoTypeFile\n\n")
-    quit()
+  if(length(args)!=1) {
+      stop("\n\tusage: getCounts.R phenoTypeFile\n\n")
+  }
+  phenoFile=args[1]
+} else {
+  phenoFile="meta/proj_B-101-533__MetaData_2023-04-15.xlsx"
 }
-
 if(as.numeric(version$major)<4) {
-    cat("\n\tNeed to use R version >= 4\n\n")
-    quit()
+    stop("\n\tNeed to use R version >= 4\n\n")
 }
 
 source("load_data.R")
@@ -15,7 +17,7 @@ source("plotTools.R")
 
 require(ggplot2)
 
-phenoFile=args[1]
+
 
 ##############################################
 od=load_data(phenoFile)
