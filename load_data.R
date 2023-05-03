@@ -7,9 +7,7 @@ load_data <- function(phenoFile) {
     oo=map(fs::dir_ls("raw",recur=T,regex="ObjectData.*.csv.gz$"),read_halo)
 
     if(length(oo)==0) {
-        cat("\n\tCan not file Halo CSV files\n")
-        cat("\tThey need to be in the subfolder '/raw'\n\n")
-        quit()
+        stop("\n\tCan not file Halo CSV files\n\tThey need to be in the subfolder '/raw'\n\n")
     }
 
     di=map(oo,"dat") %>% bind_rows

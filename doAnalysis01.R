@@ -1,14 +1,14 @@
-if (!interactive(){
-  args=commandArgs(trailing=T)
+if (!interactive()){
+  args=commandArgs(trailing=TRUE)
 
   if(length(args)!=1) {
       stop("\n\tusage: getCounts.R phenoTypeFile\n\n")
   }
-  phenoFile=args[1]
+  phenoFile = args[1]
 } else {
-  phenoFile="meta/proj_B-101-533__MetaData_2023-04-15.xlsx"
+  phenoFile = "meta/proj_B-101-533__MetaData_2023-04-15.xlsx"
 }
-if(as.numeric(version$major)<4) {
+if(as.numeric(version$major) < 4) {
     stop("\n\tNeed to use R version >= 4\n\n")
 }
 
